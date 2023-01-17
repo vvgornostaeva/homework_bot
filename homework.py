@@ -73,13 +73,11 @@ def get_api_answer(timestamp):
 def check_response(response):
     """Проверяет ответ API на соответсвие документации."""
     if not isinstance(response, dict):
-        logger.error('Данные не соответсвуют ожидаемому типу dict')
-        raise TypeError
+        raise TypeError('Данные не соответсвуют ожидаемому типу dict')
     if 'homeworks' not in response:
         raise KeyError('Отвутсвует необходимый ключ "homeworks"')
     if not isinstance(response['homeworks'], list):
-        logger.error('Данные не соответсвуют ожидаемому типу list')
-        raise TypeError
+        raise TypeError('Данные не соответсвуют ожидаемому типу list')
     return response['homeworks']
 
 
