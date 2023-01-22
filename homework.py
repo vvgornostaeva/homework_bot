@@ -35,8 +35,7 @@ logger = logging.getLogger(__name__)
 
 def check_tokens():
     """Проверяет доступность переменных окружения."""
-    variables = (PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
-    return all(variables)
+    return all((PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID))
 
 
 def send_message(bot, message):
@@ -74,7 +73,7 @@ def check_response(response):
         raise TypeError('Данные не соответсвуют ожидаемому типу dict')
     if 'homeworks' not in response:
         raise KeyError('Отвутсвует необходимый ключ "homeworks"')
-    homework_list = response['homeworks']
+    homework_list = response.get('homeworks')
     if not isinstance(homework_list, list):
         raise TypeError('Данные не соответсвуют ожидаемому типу list')
     if len(homework_list) == 0:
@@ -86,10 +85,8 @@ def check_response(response):
 
 def parse_status(homework):
     """Возвращает статус домашней работы."""
-    homework_keys = ['homework_name', 'status']
-    for key in homework_keys:
-        if key not in homework:
-            raise KeyError(f'Отсутствует ключ "{key}" в ответе API')
+    if 'homework_name' not in homework or 'status' not in homework:
+        raise KeyError('Отсутствует необходимый ключ в ответе API')
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
     if homework_status not in HOMEWORK_VERDICTS:
